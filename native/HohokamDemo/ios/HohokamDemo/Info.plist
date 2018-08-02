@@ -6,6 +6,8 @@
 	<string>Used for displaying your location on map</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Used for displaying your location on map</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used for AR/VR</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
