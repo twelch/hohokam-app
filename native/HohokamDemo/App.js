@@ -50,7 +50,7 @@ class MapScreen extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <WebView
-          source={{uri: 'https://bl.ocks.org/twelch/raw/c86e152ef915d6de9a5c025f22e8717d/'}}
+          source={{uri: 'https://dotsconnect.us/hohokam-app/swipe.html'}}
           style={webViewStyle}
         />
       </View>
