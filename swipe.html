@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Swipe between maps</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<style>
+  body {
+    overflow: hidden;
+}
+
+body * {
+   -webkit-touch-callout: none;
+     -webkit-user-select: none;
+        -moz-user-select: none;
+         -ms-user-select: none;
+             user-select: none;
+}
+
+.map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.mapboxgl-compare {
+  background-color:#fff;
+  position:absolute;
+  width:2px;
+  height:100%;
+  z-index:1;
+  box-shadow:  -7px 0px 19px 2px rgba(0, 0, 0, 0.75);
+  webkit-box-shadow:  -7px 0px 19px 2px rgba(0, 0, 0, 0.75);
+  }
+
+.mapboxgl-compare .compare-swiper {
+  background-color:#A36239;
+  box-shadow:inset 0 0 0 2px #fff;
+  display:inline-block;
+  border-radius:50%;
+  position:absolute;
+  width:60px;
+  height:60px;
+  top:50%;
+  left:-30px;
+  margin:-30px 1px 0;
+  color: #fff;
+  cursor:ew-resize;
+	background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyAgIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIgICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiICAgd2lkdGg9IjYwIiAgIGhlaWdodD0iNjAiICAgdmVyc2lvbj0iMS4xIiAgIHZpZXdCb3g9IjAgMCA2MCA2MCIgICBpZD0ic3ZnNTQzNCIgICBpbmtzY2FwZTp2ZXJzaW9uPSIwLjkxK2RldmVsK29zeG1lbnUgcjEyOTExIiAgIHNvZGlwb2RpOmRvY25hbWU9Imwtci5zdmciPiAgPG1ldGFkYXRhICAgICBpZD0ibWV0YWRhdGE1NDQ0Ij4gICAgPHJkZjpSREY+ICAgICAgPGNjOldvcmsgICAgICAgICByZGY6YWJvdXQ9IiI+ICAgICAgICA8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4gICAgICAgIDxkYzp0eXBlICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPiAgICAgICAgPGRjOnRpdGxlPjwvZGM6dGl0bGU+ICAgICAgPC9jYzpXb3JrPiAgICA8L3JkZjpSREY+ICA8L21ldGFkYXRhPiAgPGRlZnMgICAgIGlkPSJkZWZzNTQ0MiIgLz4gIDxzb2RpcG9kaTpuYW1lZHZpZXcgICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIgICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IiAgICAgYm9yZGVyb3BhY2l0eT0iMSIgICAgIG9iamVjdHRvbGVyYW5jZT0iMTAiICAgICBncmlkdG9sZXJhbmNlPSIxMCIgICAgIGd1aWRldG9sZXJhbmNlPSIxMCIgICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwIiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIgICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTI4NiIgICAgIGlua3NjYXBlOndpbmRvdy1oZWlnaHQ9Ijc1MSIgICAgIGlkPSJuYW1lZHZpZXc1NDQwIiAgICAgc2hvd2dyaWQ9InRydWUiICAgICBpbmtzY2FwZTp6b29tPSI0IiAgICAgaW5rc2NhcGU6Y3g9IjI1Ljg4OTgzMSIgICAgIGlua3NjYXBlOmN5PSIzNC4zODE4MzMiICAgICBpbmtzY2FwZTp3aW5kb3cteD0iMCIgICAgIGlua3NjYXBlOndpbmRvdy15PSIyMyIgICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjAiICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJzdmc1NDM0IiAgICAgaW5rc2NhcGU6b2JqZWN0LW5vZGVzPSJ0cnVlIiAgICAgaW5rc2NhcGU6c25hcC1zbW9vdGgtbm9kZXM9InRydWUiPiAgICA8aW5rc2NhcGU6Z3JpZCAgICAgICB0eXBlPSJ4eWdyaWQiICAgICAgIGlkPSJncmlkNTk4OSIgLz4gIDwvc29kaXBvZGk6bmFtZWR2aWV3PiAgPHBhdGggICAgIHN0eWxlPSJmaWxsOiNmZmZmZmY7ZmlsbC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjFweDtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2Utb3BhY2l0eToxIiAgICAgZD0iTSAyNSAyNCBMIDE2IDMwIEwgMjUgMzYgTCAyNSAyNCB6IE0gMzUgMjQgTCAzNSAzNiBMIDQ0IDMwIEwgMzUgMjQgeiAiICAgICBpZD0icGF0aDU5OTUiIC8+PC9zdmc+);
+  }
+</style>
+
+<div id='before' class='map'></div>
+<div id='after' class='map'></div>
+
+<script>
+  function moveToMapPosition (master, clones) {
+  var center = master.getCenter();
+  var zoom = master.getZoom();
+  var bearing = master.getBearing();
+  var pitch = master.getPitch();
+
+  clones.forEach(function (clone) {
+    clone.jumpTo({
+      center: center,
+      zoom: zoom,
+      bearing: bearing,
+      pitch: pitch
+    });
+  });
+}
+
+// Sync movements of two maps.
+//
+// All interactions that result in movement end up firing
+// a "move" event. The trick here, though, is to
+// ensure that movements don't cycle from one map
+// to the other and back again, because such a cycle
+// - could cause an infinite loop
+// - prematurely halts prolonged movements like
+//   double-click zooming, box-zooming, and flying
+function syncMove () {
+  var maps;
+  var argLen = arguments.length;
+  if (argLen === 1) {
+    maps = arguments[0];
+  } else {
+    maps = [];
+    for (var i = 0; i < argLen; i++) {
+      maps.push(arguments[i]);
+    }
+  }
+
+  // Create all the movement functions, because if they're created every time
+  // they wouldn't be the same and couldn't be removed.
+  var fns = [];
+  maps.forEach(function (map, index) {
+    fns[index] = sync.bind(null, map, maps.filter(function (o, i) { return i !== index; }));
+  });
+
+  function on () {
+    maps.forEach(function (map, index) {
+      map.on('move', fns[index]);
+    });
+  }
+
+  function off () {
+    maps.forEach(function (map, index) {
+      map.off('move', fns[index]);
+    });
+  }
+
+  // When one map moves, we turn off the movement listeners
+  // on all the maps, move it, then turn the listeners on again
+  function sync (master, clones) {
+    off();
+    moveToMapPosition(master, clones);
+    on();
+  }
+
+  on();
+}
+
+function Compare(a, b, options) {
+  this.options = options ? options : {};
+  this._onDown = this._onDown.bind(this);
+  this._onMove = this._onMove.bind(this);
+  this._onMouseUp = this._onMouseUp.bind(this);
+  this._onTouchEnd = this._onTouchEnd.bind(this);
+
+  this._swiper = document.createElement('div');
+  this._swiper.className = 'compare-swiper';
+
+  this._container = document.createElement('div');
+  this._container.className = 'mapboxgl-compare';
+  this._container.appendChild(this._swiper);
+
+  a.getContainer().appendChild(this._container);
+
+  this._clippedMap = b;
+  this._bounds = b.getContainer().getBoundingClientRect();
+  this._setPosition(0);
+  syncMove(a, b);
+
+  b.on('resize', function() {
+    this._bounds = b.getContainer().getBoundingClientRect();
+    if (this._x) this._setPosition(this._x);
+  }.bind(this));
+
+  if (this.options && this.options.mousemove) {
+    a.getContainer().addEventListener('mousemove', this._onMove);
+    b.getContainer().addEventListener('mousemove', this._onMove);
+  }
+
+  this._swiper.addEventListener('mousedown', this._onDown);
+  this._swiper.addEventListener('touchstart', this._onDown);
+}
+
+Compare.prototype = {
+  _setPointerEvents: function(v) {
+    this._container.style.pointerEvents = v;
+    this._swiper.style.pointerEvents = v;
+  },
+
+  _onDown: function(e) {
+    if (e.touches) {
+      document.addEventListener('touchmove', this._onMove);
+      document.addEventListener('touchend', this._onTouchEnd);
+    } else {
+      document.addEventListener('mousemove', this._onMove);
+      document.addEventListener('mouseup', this._onMouseUp);
+    }
+  },
+
+  _setPosition: function(x) {
+    x = Math.min(x, this._bounds.width);
+    var pos = 'translate(' + x + 'px, 0)';
+    this._container.style.transform = pos;
+    this._container.style.WebkitTransform = pos;
+    this._clippedMap.getContainer().style.clip = 'rect(0, 999em, ' + this._bounds.height + 'px,' + x + 'px)';
+    this._x = x;
+  },
+
+  _onMove: function(e) {
+    if (this.options && this.options.mousemove) {
+      this._setPointerEvents(e.touches ? 'auto' : 'none');
+    }
+
+    this._setPosition(this._getX(e));
+  },
+
+  _onMouseUp: function() {
+    document.removeEventListener('mousemove', this._onMove);
+    document.removeEventListener('mouseup', this._onMouseUp);
+  },
+
+  _onTouchEnd: function() {
+    document.removeEventListener('touchmove', this._onMove);
+    document.removeEventListener('touchend', this._onTouchEnd);
+  },
+
+  _getX: function(e) {
+    e = e.touches ? e.touches[0] : e;
+    var x = e.clientX - this._bounds.left;
+    if (x < 0) x = 0;
+    if (x > this._bounds.width) x = this._bounds.width;
+    return x;
+  }
+};
+
+if (window.mapboxgl) {
+  mapboxgl.Compare = Compare;
+} else if (typeof module !== 'undefined') {
+  module.exports = Compare;
+}
+
+mapboxgl.accessToken = 'pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA';
+var beforeMap = new mapboxgl.Map({
+    container: 'before',
+    style: 'mapbox://styles/twelch/cjkf0buuj0hep2rpk0trfcszj',
+		center: [-112.080990, 33.468996],
+    zoom: 9.15,
+});
+
+beforeMap.on('load', function() {
+  beforeMap.addLayer({
+    "id": "village",
+    "source": {
+        "type": "raster",
+        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-village/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA']
+    },
+    "type": "raster"
+  }, 'canal-prehist-1q0kur');
+
+  beforeMap.addLayer({
+    "id": "river",
+    "source": {
+        "type": "raster",
+        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-river/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA']
+    },
+    "type": "raster"
+  }, 'canal-prehist-1q0kur');
+
+  beforeMap.addLayer({
+    "id": "gravel",
+    "source": {
+        "type": "raster",
+        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-gravel/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA']
+    },
+    "type": "raster"
+  }, 'canal-prehist-1q0kur');
+
+  beforeMap.addLayer({
+    "id": "fields",
+    "source": {
+        "type": "raster",
+        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-fields/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA']
+    },
+    "type": "raster"
+  }, 'canal-prehist-1q0kur');
+
+  beforeMap.addLayer({
+    "id": "trees",
+    "source": {
+        "type": "raster",
+        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-trees/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA']
+    },
+    "type": "raster"
+  }, 'canal-prehist-1q0kur');
+})
+
+var afterMap = new mapboxgl.Map({
+    container: 'after',
+    style: 'mapbox://styles/twelch/cjk9yhbcfai8f2rnw8rfbj9qo',
+    center: [-112.080990, 33.468996],
+    zoom: 9.15,
+});
+
+var map = new mapboxgl.Compare(beforeMap, afterMap, {
+    // Set this to enable comparing two maps by mouse movement:
+    // mousemove: true
+});
+
+// beforeMap.on('load', function() {
+// 	setTimeout(function() {
+//     beforeMap.fitBounds([
+//       [-111.86, 33.415],
+//       [-111.838, 33.447]
+//     ], {
+//       speed: .2
+//     });
+//   }, 2000);
+// });
+</script>
+
+</body>
+</html>
