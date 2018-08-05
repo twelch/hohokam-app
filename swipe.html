@@ -234,46 +234,21 @@ var beforeMap = new mapboxgl.Map({
 
 beforeMap.on('load', function() {
   beforeMap.addLayer({
-    "id": "village",
+    "id": "base",
     "source": {
         "type": "raster",
-        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-village/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA']
+        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-base/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA'],
+        tileSize: 256
     },
     "type": "raster"
   }, 'canal-prehist-1q0kur');
 
   beforeMap.addLayer({
-    "id": "river",
+    "id": "structure",
     "source": {
         "type": "raster",
-        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-river/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA']
-    },
-    "type": "raster"
-  }, 'canal-prehist-1q0kur');
-
-  beforeMap.addLayer({
-    "id": "gravel",
-    "source": {
-        "type": "raster",
-        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-gravel/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA']
-    },
-    "type": "raster"
-  }, 'canal-prehist-1q0kur');
-
-  beforeMap.addLayer({
-    "id": "fields",
-    "source": {
-        "type": "raster",
-        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-fields/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA']
-    },
-    "type": "raster"
-  }, 'canal-prehist-1q0kur');
-
-  beforeMap.addLayer({
-    "id": "trees",
-    "source": {
-        "type": "raster",
-        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-trees/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA']
+        tiles: ['https://api.mapbox.com/v4/twelch.hohokam-structure/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA'],
+        tileSize: 256
     },
     "type": "raster"
   }, 'canal-prehist-1q0kur');
