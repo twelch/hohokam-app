@@ -7,7 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, Image, View, WebView} from 'react-native';
+import {Platform, StyleSheet, Text, Image, View, Button, WebView} from 'react-native';
+import GestureView from './components/GestureView'
 import { createBottomTabNavigator } from 'react-navigation';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialComm from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -41,6 +42,22 @@ class HomeScreen extends React.Component {
 }
 
 class MapScreen extends React.Component {
+  onEnablePitch() {
+    this._webview.injectJavaScript('beforeMap.easeTo({pitch:45});')
+  }
+
+  onDisablePitch() {
+    this._webview.injectJavaScript('beforeMap.easeTo({pitch:0});')
+  }
+
+  onLowerOpacity() {
+    this._webview.injectJavaScript('document.getElementById("after").style.opacity = .75;')
+  }
+
+  onHigherOpacity() {
+    this._webview.injectJavaScript('document.getElementById("after").style.opacity = 1;')
+  }
+
   render() {
     const webViewStyle = Platform.select({
       ios: {marginTop: 20},
@@ -48,11 +65,37 @@ class MapScreen extends React.Component {
     });
 
     return (
-      <View style={{ flex: 1 }}>
+      <GestureView
+        style={{ flex: 1 }}
+        onSwipeUp={this.onEnablePitch.bind(this)}
+        onSwipeDown={this.onDisablePitch.bind(this)}
+        onSwipeLeftEdge={this.onLowerOpacity.bind(this)}
+        onSwipeRightEdge={this.onHigherOpacity.bind(this)}
+        swipeThreshold={200}
+        capture >
         <WebView
           source={{uri: 'https://dotsconnect.us/hohokam-app/swipe.html'}}
           style={webViewStyle}
+          javaScriptEnabled={true}
+          ref={c => this._webview = c}
+          bounces={false}
+          scrollEnabled={false}
         />
+      </GestureView>
+    );
+  }
+}
+
+class TourScreen extends React.Component {
+  render() {
+    const webViewStyle = Platform.select({
+      ios: {marginTop: 20},
+      android: {}
+    });
+
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Tours</Text>
       </View>
     );
   }
@@ -60,7 +103,8 @@ class MapScreen extends React.Component {
 
 export default createBottomTabNavigator({
   Home: HomeScreen,
-  Map: MapScreen
+  Map: MapScreen,
+  Tour: TourScreen
 }, {
   navigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, tintColor }) => {
@@ -70,6 +114,8 @@ export default createBottomTabNavigator({
         icon = (<MaterialComm name='home-outline' size={25} color={tintColor} />)
       } else if (routeName === 'Map') {
         icon = (<Entypo name='map' size={25} color={tintColor} />)
+      }  else if (routeName === 'Tour') {
+        icon = (<MaterialComm name='map-marker-outline' size={25} color={tintColor} />)
       }
 
       // You can return any component that you like here! We usually use an
