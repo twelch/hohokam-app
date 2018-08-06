@@ -233,6 +233,13 @@ beforeMap = new mapboxgl.Map({
     maxZoom: 15
 });
 
+beforeMap.addControl(new mapboxgl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    },
+    trackUserLocation: true
+}));
+
 beforeMap.on('load', function() {
   beforeMap.addLayer({
     "id": "base",
@@ -274,13 +281,6 @@ afterMap = new mapboxgl.Map({
     zoom: 9.15,
     maxZoom: 15
 });
-
-afterMap.addControl(new mapboxgl.GeolocateControl({
-    positionOptions: {
-        enableHighAccuracy: true
-    },
-    trackUserLocation: true
-}));
 
 var map = new mapboxgl.Compare(beforeMap, afterMap, {
     // Set this to enable comparing two maps by mouse movement:
