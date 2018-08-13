@@ -36,7 +36,7 @@ export default class TourScreen extends Component {
       <ViroARScene onTrackingUpdated={this._onInitialized} >
         <ViroAmbientLight color={"#999999"} />
         <ViroDirectionalLight
-          direction={[-3,-1,1]}
+          direction={[-1,-.5,.5]}
           color="#ffffff"
           castsShadow={true}
           shadowMapSize={2048}
