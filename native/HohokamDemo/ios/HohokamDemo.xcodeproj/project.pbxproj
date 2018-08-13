@@ -34,6 +34,7 @@
 		6A0E3FAE21113B760026A172 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A0E3F7E21113B760026A172 /* EvilIcons.ttf */; };
 		6A0E3FAF21113B760026A172 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A0E3F7F21113B760026A172 /* SimpleLineIcons.ttf */; };
 		6A0E3FB021113B760026A172 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A0E3F8021113B760026A172 /* MaterialIcons.ttf */; };
+		6A3131AD21223832008C879A /* MBFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A31318521223832008C879A /* MBFingerTipWindow.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 /* End PBXBuildFile section */
@@ -340,6 +341,9 @@
 		6A0E3F7E21113B760026A172 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
 		6A0E3F7F21113B760026A172 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		6A0E3F8021113B760026A172 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		6A31318521223832008C879A /* MBFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBFingerTipWindow.m; path = HohokamDemo/MBFingerTipWindow.m; sourceTree = "<group>"; };
+		6A3131AB21223832008C879A /* MBFingerTipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBFingerTipWindow.h; path = HohokamDemo/MBFingerTipWindow.h; sourceTree = "<group>"; };
+		6A3131AC21223832008C879A /* Fingertips.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Fingertips.h; path = HohokamDemo/Fingertips.h; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A22D2F82BED7030A407D7980 /* Pods-HohokamDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HohokamDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-HohokamDemo/Pods-HohokamDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -461,6 +465,9 @@
 		13B07FAE1A68108700A75B9A /* HohokamDemo */ = {
 			isa = PBXGroup;
 			children = (
+				6A3131AC21223832008C879A /* Fingertips.h */,
+				6A3131AB21223832008C879A /* MBFingerTipWindow.h */,
+				6A31318521223832008C879A /* MBFingerTipWindow.m */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1100,6 +1107,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				6A3131AD21223832008C879A /* MBFingerTipWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
