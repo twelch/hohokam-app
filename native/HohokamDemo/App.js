@@ -13,6 +13,20 @@ import { createBottomTabNavigator } from 'react-navigation';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialComm from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import {
+  ViroARScene,
+  ViroText,
+  ViroConstants,
+  ViroMaterials,
+  ViroARPlaneSelector,
+  ViroARSceneNavigator,
+} from 'react-viro';
+
+var sharedProps = {
+  apiKey:"EFC51CC7-633C-428B-AD19-1976045DD005",
+}
+var InitialARScene = require('./components/TourScreen');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1
@@ -25,7 +39,14 @@ const styles = StyleSheet.create({
   homeImage: {
     minWidth: '70%',
     maxWidth: '90%'
-  }
+  },
+  helloWorldTextStyle: {
+    fontFamily: 'Arial',
+    fontSize: 30,
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',  
+  },
 });
 
 class HomeScreen extends React.Component {
@@ -71,7 +92,7 @@ class MapScreen extends React.Component {
         onSwipeDown={this.onDisablePitch.bind(this)}
         onSwipeLeftEdge={this.onLowerOpacity.bind(this)}
         onSwipeRightEdge={this.onHigherOpacity.bind(this)}
-        swipeThreshold={200}
+        swipeThreshold={400}
         capture >
         <WebView
           source={{uri: 'https://dotsconnect.us/hohokam-app/swipe.html'}}
@@ -88,14 +109,11 @@ class MapScreen extends React.Component {
 
 class TourScreen extends React.Component {
   render() {
-    const webViewStyle = Platform.select({
-      ios: {marginTop: 20},
-      android: {}
-    });
-
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Tours</Text>
+      <View style={{ flex: 1 }}>
+        <ViroARSceneNavigator
+          apiKey='EFC51CC7-633C-428B-AD19-1976045DD005'
+          initialScene={{scene: InitialARScene}} />
       </View>
     );
   }
