@@ -92,7 +92,7 @@ class MapScreen extends React.Component {
         onSwipeDown={this.onDisablePitch.bind(this)}
         onSwipeLeftEdge={this.onLowerOpacity.bind(this)}
         onSwipeRightEdge={this.onHigherOpacity.bind(this)}
-        swipeThreshold={200}
+        swipeThreshold={400}
         capture >
         <WebView
           source={{uri: 'https://dotsconnect.us/hohokam-app/swipe.html'}}
