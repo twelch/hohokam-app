@@ -7,11 +7,12 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, Image, View, Button, WebView} from 'react-native';
+import {Platform, StatusBar, StyleSheet, Text, Image, View, Button, TouchableOpacity, WebView} from 'react-native';
 import GestureView from './components/GestureView'
-import { createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator, SafeAreaView } from 'react-navigation';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialComm from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
   ViroARScene,
@@ -40,13 +41,38 @@ const styles = StyleSheet.create({
     minWidth: '70%',
     maxWidth: '90%'
   },
-  helloWorldTextStyle: {
-    fontFamily: 'Arial',
-    fontSize: 30,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',  
+  overHeader: {
+    position: 'absolute',
+    marginTop: StatusBar.currentHeight,
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: 40,
+    backgroundColor: 'transparent',
+    zIndex: 9999
   },
+  mapButton: {
+    backgroundColor: '#EEE',
+    color: '#FFF',
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: '#BBB',
+    padding: 5,
+    marginTop: 10,
+    marginRight: 8,
+    height: 40,
+    width: 40,
+    color: '#FFF',
+    shadowColor: '#303838',
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 5,
+    shadowOpacity: 0.45,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  mapButtonSelected: {
+    backgroundColor: '#CCC'
+  }
 });
 
 class HomeScreen extends React.Component {
@@ -63,46 +89,92 @@ class HomeScreen extends React.Component {
 }
 
 class MapScreen extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      showTransparency: false,
+      showLocation: false
+    }
+  }
+
+
   onEnablePitch() {
-    this._webview.injectJavaScript('beforeMap.easeTo({pitch:45});')
+    this._webview.injectJavaScript('beforeMap.easeTo({pitch:45});');
   }
 
   onDisablePitch() {
-    this._webview.injectJavaScript('beforeMap.easeTo({pitch:0});')
+    this._webview.injectJavaScript('beforeMap.easeTo({pitch:0});');
+  }
+
+  onToggleLocation() {
+    this._webview.injectJavaScript('beforeGeo._geolocateButton.click(); afterGeo._geolocateButton.click()');
+    this.setState({
+      showLocation: !this.state.showLocation
+    })
   }
 
   onLowerOpacity() {
     this._webview.injectJavaScript('document.getElementById("after").style.opacity = .75;')
+    this.setState({
+      showTransparency: true
+    })
   }
 
   onHigherOpacity() {
     this._webview.injectJavaScript('document.getElementById("after").style.opacity = 1;')
+    this.setState({
+      showTransparency: false
+    })
+  }
+
+  onToggleOpacity() {
+    if (this.state.showTransparency) {
+      this.onHigherOpacity();
+    } else {
+      this.onLowerOpacity();
+    }
+    this.setState({
+      showTransperency: !this.state.showTransparency
+    })
   }
 
   render() {
-    const webViewStyle = Platform.select({
-      ios: {marginTop: 20},
-      android: {}
-    });
+    const webViewStyle = {
+      margin: 0
+    };
 
     return (
-      <GestureView
-        style={{ flex: 1 }}
-        onSwipeUp={this.onEnablePitch.bind(this)}
-        onSwipeDown={this.onDisablePitch.bind(this)}
-        onSwipeLeftEdge={this.onLowerOpacity.bind(this)}
-        onSwipeRightEdge={this.onHigherOpacity.bind(this)}
-        swipeThreshold={400}
-        capture >
-        <WebView
-          source={{uri: 'https://dotsconnect.us/hohokam-app/swipe.html'}}
-          style={webViewStyle}
-          javaScriptEnabled={true}
-          ref={c => this._webview = c}
-          bounces={false}
-          scrollEnabled={false}
-        />
-      </GestureView>
+      <View style={styles.container} >
+        <SafeAreaView style={styles.overHeader}>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }} >
+            <TouchableOpacity style={{ ...styles.mapButton, ...(this.state.showTransparency ? styles.mapButtonSelected : {}) }} onPress={this.onToggleOpacity.bind(this)}>
+              <MaterialComm name='opacity' size={25} />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ ...styles.mapButton, ...(this.state.showLocation ? styles.mapButtonSelected : {}) }} onPress={this.onToggleLocation.bind(this)}>
+              <FontAwesome name='location-arrow' size={25} />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+
+        <GestureView
+          style={{ flex: 1 }}
+          onSwipeUp={this.onEnablePitch.bind(this)}
+          onSwipeDown={this.onDisablePitch.bind(this)}
+          onSwipeLeftEdge={this.onLowerOpacity.bind(this)}
+          onSwipeRightEdge={this.onHigherOpacity.bind(this)}
+          swipeThreshold={400}
+          capture >
+          <WebView
+            source={{uri: 'https://dotsconnect.us/hohokam-app/swipe.html'}}
+            style={webViewStyle}
+            javaScriptEnabled={true}
+            ref={c => this._webview = c}
+            bounces={false}
+            scrollEnabled={false}
+          />
+        </GestureView>
+      </View>
     );
   }
 }
@@ -119,8 +191,7 @@ class TourScreen extends React.Component {
   }
 }
 
-export default createBottomTabNavigator({
-  Home: HomeScreen,
+const BottomNav = createBottomTabNavigator({
   Map: MapScreen,
   Tour: TourScreen
 }, {
@@ -147,3 +218,16 @@ export default createBottomTabNavigator({
     showLabel: false,
   },
 });
+
+export default class App extends Component {
+  render() {
+    return [
+      <StatusBar
+        translucent
+        backgroundColor="rgba(0, 0, 0, 0.24)"
+        animated
+      />,
+      <BottomNav />
+    ];
+  }
+}
