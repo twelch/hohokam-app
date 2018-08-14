@@ -33,6 +33,10 @@ body * {
     width: 100%;
 }
 
+.mapboxgl-ctrl-geolocate {
+  display: none !important;
+}
+
 .mapboxgl-compare {
   background-color:#fff;
   position:absolute;
@@ -44,7 +48,7 @@ body * {
   }
 
 .mapboxgl-compare .compare-swiper {
-  background-color:#A36239;
+  background-color:#AC534B;
   box-shadow:inset 0 0 0 2px #fff;
   display:inline-block;
   border-radius:50%;
@@ -233,12 +237,14 @@ beforeMap = new mapboxgl.Map({
     maxZoom: 15
 });
 
-beforeMap.addControl(new mapboxgl.GeolocateControl({
+beforeGeo = new mapboxgl.GeolocateControl({
+    displayControlsDefault: false,  
     positionOptions: {
         enableHighAccuracy: true
     },
     trackUserLocation: true
-}));
+})
+beforeMap.addControl(beforeGeo);
 
 beforeMap.on('load', function() {
   beforeMap.addLayer({
@@ -281,6 +287,15 @@ afterMap = new mapboxgl.Map({
     zoom: 9.15,
     maxZoom: 15
 });
+
+afterGeo = new mapboxgl.GeolocateControl({
+    displayControlsDefault: false,  
+    positionOptions: {
+        enableHighAccuracy: true
+    },
+    trackUserLocation: true
+});
+afterMap.addControl(afterGeo);
 
 var map = new mapboxgl.Compare(beforeMap, afterMap, {
     // Set this to enable comparing two maps by mouse movement:
