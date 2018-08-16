@@ -193,14 +193,14 @@
 
 - (void)updateFingertipsAreActive;
 {
-    if (self.alwaysShowTouches || ([[[[NSProcessInfo processInfo] environment] objectForKey:@"DEBUG_FINGERTIP_WINDOW"] boolValue]))
-    {
+//    if (self.alwaysShowTouches || ([[[[NSProcessInfo processInfo] environment] objectForKey:@"DEBUG_FINGERTIP_WINDOW"] boolValue]))
+//    {
         self.active = YES;
-    }
-    else
-    {
-        self.active = [self anyScreenIsMirrored];
-    }
+//    }
+//    else
+//    {
+//        self.active = [self anyScreenIsMirrored];
+//    }
 }
 
 #pragma mark -
