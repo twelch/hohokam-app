@@ -43,7 +43,7 @@ export default class TourScreen extends Component {
           shadowOpacity={.7} />
         <ViroARPlane minHeight={.5} minWidth={.5} alignment={"Horizontal"}>
           <Viro3DObject source={require('../assets/adobe_maya.vrx')}
-            position={[-12, 0, -4]}
+            position={[-12, 0, -18]}
             scale={[0.05, 0.05, 0.05]}
             type="VRX"
           />
