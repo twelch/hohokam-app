@@ -192,21 +192,28 @@ class TourScreen extends React.Component {
 }
 
 const BottomNav = createBottomTabNavigator({
+  Home: HomeScreen,
   Map: MapScreen,
-  Tour: TourScreen
+  Tour: TourScreen,
+  Share: HomeScreen,
+  Search: HomeScreen,
 }, {
+  initialRouteName: 'Map',
   navigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, tintColor }) => {
       const { routeName } = navigation.state;
       let icon;
       if (routeName === 'Home') {
-        icon = (<MaterialComm name='home-outline' size={25} color={tintColor} />)
+        icon = (<MaterialComm name='menu' size={28} color={tintColor} />)
       } else if (routeName === 'Map') {
         icon = (<Entypo name='map' size={25} color={tintColor} />)
-      }  else if (routeName === 'Tour') {
-        icon = (<MaterialComm name='map-marker-outline' size={25} color={tintColor} />)
+      } else if (routeName === 'Tour') {
+        icon = (<MaterialComm name='map-marker-outline' size={28} color={tintColor} />)
+      }  else if (routeName === 'Share') {
+        icon = (<Entypo name='share-alternative' size={24} color={tintColor} />)
+      } else if (routeName === 'Search') {
+        icon = (<Entypo name='magnifying-glass' size={26} color={tintColor} />)
       }
-
       // You can return any component that you like here! We usually use an
       // icon component from react-native-vector-icons
       return icon;
