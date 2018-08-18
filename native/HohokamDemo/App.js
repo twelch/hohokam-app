@@ -28,6 +28,9 @@ var sharedProps = {
 }
 var InitialARScene = require('./components/TourScreen');
 
+var NAV_SELECT = "NAV_SELECT";
+var NAV_TOUR = "NAV_TOUR";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1
@@ -72,6 +75,26 @@ const styles = StyleSheet.create({
   },
   mapButtonSelected: {
     backgroundColor: '#CCC'
+  },
+  arBackButton: {
+    backgroundColor: 'rgba(122,122,122,0.3)',
+    color: '#FFF',
+    borderRadius: 30,
+    padding: 5,
+    marginTop: 10,
+    marginLeft: 8,
+    height: 40,
+    width: 40,
+    color: '#FFF',
+    shadowColor: '#303838',
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 5,
+    shadowOpacity: 0.45,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  arBackButtonSelected: {
+    backgroundColor: '#CCC'
   }
 });
 
@@ -97,7 +120,6 @@ class MapScreen extends React.Component {
       showLocation: false
     }
   }
-
 
   onEnablePitch() {
     this._webview.injectJavaScript('beforeMap.easeTo({pitch:45});');
@@ -147,7 +169,7 @@ class MapScreen extends React.Component {
     return (
       <View style={styles.container} >
         <SafeAreaView style={styles.overHeader}>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }} >
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', marginLeft: 8 }} >
             <TouchableOpacity style={{ ...styles.mapButton, ...(this.state.showTransparency ? styles.mapButtonSelected : {}) }} onPress={this.onToggleOpacity.bind(this)}>
               <MaterialComm name='opacity' size={25} />
             </TouchableOpacity>
@@ -169,6 +191,7 @@ class MapScreen extends React.Component {
             source={{uri: 'https://dotsconnect.us/hohokam-app/swipe.html'}}
             style={webViewStyle}
             javaScriptEnabled={true}
+            geolocationEnabled={true}
             ref={c => this._webview = c}
             bounces={false}
             scrollEnabled={false}
@@ -191,10 +214,109 @@ class TourScreen extends React.Component {
   }
 }
 
+class TourNavigatorScreen extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      nav: NAV_SELECT,
+      showLocation: false
+    }
+  }
+
+  onEnablePitch() {
+    this._webview.injectJavaScript('beforeMap.easeTo({pitch:45});');
+  }
+
+  onDisablePitch() {
+    this._webview.injectJavaScript('beforeMap.easeTo({pitch:0});');
+  }
+
+  onToggleLocation() {
+    this._webview.injectJavaScript('beforeGeo._geolocateButton.click(); afterGeo._geolocateButton.click()');
+    this.setState({
+      showLocation: !this.state.showLocation
+    })
+  }
+
+  onMessage(event) {
+    if (event && event.nativeEvent.data === 'startTour') {
+      this._startTour()
+    }
+  }
+  
+  _getTourSelect() {
+    return (
+      <View style={styles.container} >
+        <SafeAreaView style={styles.overHeader}>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', marginLeft: 8 }} >
+            <TouchableOpacity style={{ ...styles.mapButton, ...(this.state.showLocation ? styles.mapButtonSelected : {}) }} onPress={this.onToggleLocation.bind(this)}>
+              <FontAwesome name='location-arrow' size={25} />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+        <GestureView
+          style={{ flex: 1 }}
+          onSwipeUp={this.onEnablePitch.bind(this)}
+          onSwipeDown={this.onDisablePitch.bind(this)}
+          swipeThreshold={400}
+          capture >
+          <WebView
+            source={{uri: 'https://dotsconnect.us/hohokam-app/tour-select.html'}}
+            javaScriptEnabled={true}
+            geolocationEnabled={true}
+            onMessage={this.onMessage.bind(this)}
+            ref={c => this._webview = c}
+            bounces={false}
+            scrollEnabled={false} />
+        </GestureView>
+      </View>
+    );
+  }
+
+  _getTour() {
+    return (
+      <View style={{ flex: 1 }}>
+        <SafeAreaView style={styles.overHeader}>
+          <View style={{ flex: 1, flexDirection: 'row' }} >
+            <TouchableOpacity style={{ ...styles.arBackButton, ...(this.state.showTransparency ? styles.arBackButtonSelected : {}) }} onPress={this._exitTour.bind(this)}>
+              <Entypo name='chevron-thin-left' size={25} />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+        <ViroARSceneNavigator
+          apiKey='EFC51CC7-633C-428B-AD19-1976045DD005'
+          initialScene={{scene: InitialARScene}}
+          onExitViro={this._exitTour} />
+      </View>
+    )
+  }
+
+  _startTour() {
+    this.setState({
+      nav: NAV_TOUR
+    })
+  }
+
+  _exitTour() {
+    this.setState({
+      nav: NAV_SELECT
+    })
+  }
+
+  render() {
+    if (this.state.nav == NAV_SELECT) {
+      return this._getTourSelect();
+    } else if (this.state.nav == NAV_TOUR) {
+      return this._getTour();
+    }
+  }
+}
+
 const BottomNav = createBottomTabNavigator({
   Home: HomeScreen,
   Map: MapScreen,
-  Tour: TourScreen,
+  Tour: TourNavigatorScreen,
   Share: HomeScreen,
   Search: HomeScreen,
 }, {
