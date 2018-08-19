@@ -126,6 +126,15 @@ beforeGeo = new mapboxgl.GeolocateControl({
 map.addControl(beforeGeo);
 
 map.on('load', function() {
+    setTimeout(function() {
+      map.fitBounds([
+        [-112.17, 33.26],
+        [-111.77, 33.51]
+      ],{
+          duration: 0
+      });
+    }, 0);
+
     // When a click event occurs on a feature in the places layer, open a popup at the
     // location of the feature, with description HTML from its properties.
     map.on('click', 'hohokam-ar-points', function (e) {
