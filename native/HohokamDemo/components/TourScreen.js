@@ -14,6 +14,7 @@ import {
   Viro3DObject,
   ViroAmbientLight,
   ViroDirectionalLight,
+  ViroMaterials,
   ViroSpotLight,
 } from 'react-viro';
 
@@ -34,23 +35,24 @@ export default class TourScreen extends Component {
   render() {
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized} >
-        <ViroAmbientLight color={"#999999"} />
+        <ViroAmbientLight color={"#999999"} intensity={250} />
         <ViroDirectionalLight
-          direction={[-1,-.5,.5]}
+          direction={[-1, -.75, -.15]}
           color="#ffffff"
           castsShadow={true}
           shadowMapSize={2048}
           shadowOpacity={.7} />
         <ViroARPlane minHeight={.5} minWidth={.5} alignment={"Horizontal"}>
-          <Viro3DObject source={require('../assets/adobe_maya.vrx')}
-            position={[-12, 0, -18]}
-            scale={[0.05, 0.05, 0.05]}
+          <Viro3DObject source={require('../assets/adobe_4.vrx')}          
+            position={[-12,0,-30]}
+            scale={[0.012, 0.012, 0.01]}
+            arShadowReceiver={true}
             type="VRX"
           />
           <ViroQuad
-            position={[-5, 0, -5]}
+            position={[-25, .5, -25]}
             rotation={[-90, 0, 0]}
-            width={20} height={20}
+            width={50} height={50}
             arShadowReceiver={true} />
         </ViroARPlane>
       </ViroARScene>
@@ -77,5 +79,11 @@ var styles = StyleSheet.create({
     textAlign: 'center',  
   },
 });
+
+ViroMaterials.createMaterials({
+  ground:{
+    diffuseColor: "#000000"
+  }
+})
 
 module.exports = TourScreen;
