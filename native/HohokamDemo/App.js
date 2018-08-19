@@ -23,6 +23,10 @@ import {
   ViroARSceneNavigator,
 } from 'react-viro';
 
+import Mapbox from '@mapbox/react-native-mapbox-gl'
+
+Mapbox.setAccessToken('pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA');
+
 var sharedProps = {
   apiKey:"EFC51CC7-633C-428B-AD19-1976045DD005",
 }
@@ -310,6 +314,52 @@ class TourNavigatorScreen extends React.Component {
     } else if (this.state.nav == NAV_TOUR) {
       return this._getTour();
     }
+  }
+}
+
+class ARSelectScreenNative extends React.Component {
+  render() {
+    return (
+      <Mapbox.MapView
+        styleURL={'mapbox://styles/twelch/cjkybga2v4w2r2rkh8ynqbqzy'}
+        zoomLevel={14}
+        maxZoom={15}
+        centerCoordinate={[-111.841582, 33.434923]}
+        style={styles.container}>
+          {/* <Mapbox.VectorSource
+            id='hohokom-label-points'
+            url='twelch.cjk8u01yw01szm0nz6esbrkph-8cm82' >
+            <Mapbox.SymbolLayer
+              id='hohokom-labels'
+              sourceID='hohokom-label-points'
+              sourceLayerID = 'hohokom-label-points'
+              style={{
+                textField: '{name}',
+                textSize: 16
+              }}
+            />
+          </Mapbox.VectorSource> */}
+          {/* <Mapbox.RasterSource
+            id='base-source'
+            url='https://api.mapbox.com/v4/twelch.hohokam_base/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA' 
+            tileSize={256} >
+            <Mapbox.RasterLayer
+              id="base"
+              sourceID="base-source"
+              before
+            />
+          </Mapbox.RasterSource>
+          <Mapbox.RasterSource
+            id='structure-source'
+            url='https://api.mapbox.com/v4/twelch.hohokam_structure/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA' 
+            tileSize={256} >
+            <Mapbox.RasterLayer
+              id="structure"
+              sourceID="structure-source"
+            />
+          </Mapbox.RasterSource> */}
+      </Mapbox.MapView>
+    );
   }
 }
 
