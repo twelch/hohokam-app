@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
   overHeader: {
     position: 'absolute',
     marginTop: StatusBar.currentHeight,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     top: 0,
     left: 0,
     width: '100%',
@@ -65,8 +68,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#BBB',
     padding: 5,
-    marginTop: 10,
-    marginRight: 8,
+    marginTop: 12,
+    marginRight: 14,
+    marginLeft: 14,
     height: 40,
     width: 40,
     color: '#FFF',
@@ -173,14 +177,12 @@ class MapScreen extends React.Component {
     return (
       <View style={styles.container} >
         <SafeAreaView style={styles.overHeader}>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', marginLeft: 8 }} >
-            <TouchableOpacity style={{ ...styles.mapButton, ...(this.state.showTransparency ? styles.mapButtonSelected : {}) }} onPress={this.onToggleOpacity.bind(this)}>
-              <MaterialComm name='opacity' size={25} />
-            </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.mapButton, ...(this.state.showLocation ? styles.mapButtonSelected : {}) }} onPress={this.onToggleLocation.bind(this)}>
-              <FontAwesome name='location-arrow' size={25} />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={{ ...styles.mapButton, ...(this.state.showTransparency ? styles.mapButtonSelected : {}) }} onPress={this.onToggleOpacity.bind(this)}>
+            <MaterialComm name='opacity' size={25} />
+          </TouchableOpacity>
+          <TouchableOpacity style={{ ...styles.mapButton, ...(this.state.showLocation ? styles.mapButtonSelected : {}) }} onPress={this.onToggleLocation.bind(this)}>
+            <FontAwesome name='location-arrow' size={25} />
+          </TouchableOpacity>
         </SafeAreaView>
 
         <GestureView
