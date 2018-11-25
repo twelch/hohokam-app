@@ -248,6 +248,15 @@ beforeGeo = new mapboxgl.GeolocateControl({
 beforeMap.addControl(beforeGeo);
 
 beforeMap.on('load', function() {
+  beforeMap.addLayer({
+    "id": "base",
+    "source": {
+        "type": "raster",
+        tiles: ['https://api.mapbox.com/v4/twelch.6v3h1uns/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHdlbGNoIiwiYSI6ImNqYzVxYTJ6NTF2NWUyeHBmNjcwdWwxY28ifQ.ug4rD1lc-yvGduyTkO18UA'],
+        tileSize: 256
+    },
+    "type": "raster"
+  }, 'canal-prehist-1q0kur');
 
   beforeMap.addLayer({
     "id": "structure",
