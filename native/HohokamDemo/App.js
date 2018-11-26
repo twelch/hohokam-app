@@ -145,14 +145,14 @@ class MapScreen extends React.Component {
   }
 
   onLowerOpacity() {
-    this._webview.injectJavaScript('document.getElementById("after").style.opacity = .75;')
+    this._webview.injectJavaScript('toggleAfterTransparency();')
     this.setState({
       showTransparency: true
     })
   }
 
   onHigherOpacity() {
-    this._webview.injectJavaScript('document.getElementById("after").style.opacity = 1;')
+    this._webview.injectJavaScript('toggleAfterTransparency();')
     this.setState({
       showTransparency: false
     })
@@ -231,11 +231,11 @@ class TourNavigatorScreen extends React.Component {
   }
 
   onEnablePitch() {
-    this._webview.injectJavaScript('toggleAfterTransparency();');
+    this._webview.injectJavaScript('beforeMap.easeTo({pitch:45});');
   }
 
   onDisablePitch() {
-    this._webview.injectJavaScript('toggleAfterTransparency();');
+    this._webview.injectJavaScript('beforeMap.easeTo({pitch:0});');
   }
 
   onToggleLocation() {
