@@ -231,11 +231,11 @@ class TourNavigatorScreen extends React.Component {
   }
 
   onEnablePitch() {
-    this._webview.injectJavaScript('beforeMap.easeTo({pitch:45});');
+    this._webview.injectJavaScript('toggleAfterTransparency();');
   }
 
   onDisablePitch() {
-    this._webview.injectJavaScript('beforeMap.easeTo({pitch:0});');
+    this._webview.injectJavaScript('toggleAfterTransparency();');
   }
 
   onToggleLocation() {

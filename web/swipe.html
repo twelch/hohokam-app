@@ -314,6 +314,24 @@ afterMap = new mapboxgl.Map({
     maxZoom: 15
 });
 
+var isAfterTransparent = false
+function toggleAfterTransparency () {
+  if (isAfterTransparent) {
+    // Set to default - no transparency
+    afterMap.setPaintProperty('mapbox-mapbox-satellite', 'raster-opacity', 1)
+    afterMap.setPaintProperty('background', 'background-opacity', 1)
+    isAfterTransparent = false
+  } else {
+    // Add transparency allowing view of prehistoric map underneath
+    afterMap.setPaintProperty('mapbox-mapbox-satellite', 'raster-opacity', 0)
+    afterMap.setPaintProperty('background', 'background-opacity', 0)
+    isAfterTransparent = true
+  }
+  
+}
+
+
+
 afterGeo = new mapboxgl.GeolocateControl({
     displayControlsDefault: false,  
     positionOptions: {
