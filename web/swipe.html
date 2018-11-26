@@ -320,11 +320,13 @@ function toggleAfterTransparency () {
     // Set to default - no transparency
     afterMap.setPaintProperty('mapbox-mapbox-satellite', 'raster-opacity', 1)
     afterMap.setPaintProperty('background', 'background-opacity', 1)
+    afterMap.setPaintProperty('background', 'background-color', {"base":1,"stops":[[11,"hsl(35, 32%, 91%)"],[13,"hsl(35, 12%, 89%)"]]});
     isAfterTransparent = false
   } else {
     // Add transparency allowing view of prehistoric map underneath
     afterMap.setPaintProperty('mapbox-mapbox-satellite', 'raster-opacity', 0)
-    afterMap.setPaintProperty('background', 'background-opacity', 0)
+    afterMap.setPaintProperty('background', 'background-opacity', 0.5)
+    afterMap.setPaintProperty('background', 'background-color', "#fff");
     isAfterTransparent = true
   }
   
